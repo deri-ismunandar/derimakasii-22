@@ -6,7 +6,7 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#3a5a20",
-  "icons": [
+  "icons": ["Minimalist White Checklist Logo.png"
     {
       "src": "Minimalist White Checklist Logo.png",
       "sizes": "192x192",
