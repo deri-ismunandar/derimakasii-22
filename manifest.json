@@ -4,7 +4,7 @@
   "description": "Sistem Kasir dan Keuangan F&B PWA Offline",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#203310",
   "theme_color": "#3a5a20",
   "icons": [
     {
