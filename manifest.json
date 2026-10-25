@@ -6,16 +6,18 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#3a5a20",
-  "icons": ["Minimalist White Checklist Logo.png"
+  "icons": [
     {
       "src": "Minimalist White Checklist Logo.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "Minimalist White Checklist Logo.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
