@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>derimakasii - Kasir & Keuangan F&B PWA</title>
 
-    <!-- App Cover & Window Titlebar Icons -->
     <link rel="icon" type="image/png" sizes="32x32" href="Minimalist White Checklist Logo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="Minimalist White Checklist Logo.png">
     <link rel="shortcut icon" href="Minimalist White Checklist Logo.png">
     <link rel="apple-touch-icon" href="Minimalist White Checklist Logo.png">
     <link rel="manifest" href="manifest.json">
@@ -21,7 +19,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <!-- SheetJS (xlsx) for clean Excel exports -->
+    <!-- SheetJS XLSX Export -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -51,126 +49,358 @@
                     },
                     fontFamily: {
                         sans: ['Poppins', 'sans-serif'],
-                        mono: ['Courier New', 'Courier', 'monospace'],
+                        mono: ['Courier New', 'monospace']
                     }
                 }
             }
         }
     </script>
-    
+
     <style>
         :root {
-            --c-earth-50: 244 247 242; --c-earth-100: 229 236 224; --c-earth-200: 194 212 184;
-            --c-earth-500: 82 122 50; --c-earth-600: 58 90 32; --c-earth-700: 44 69 24; 
-            --c-earth-800: 32 51 17; --c-earth-900: 20 33 10; --c-earth-950: 10 17 5;
-            --c-gold-400: 224 171 43; --c-gold-500: 198 146 20; --c-gold-600: 163 118 13;
+            --c-earth-50: 244 247 242;
+            --c-earth-100: 232 239 228;
+            --c-earth-200: 205 221 197;
+            --c-earth-500: 82 122 50;
+            --c-earth-600: 58 90 32;
+            --c-earth-700: 45 71 25;
+            --c-earth-800: 32 51 17;
+            --c-earth-900: 21 34 11;
+            --c-earth-950: 12 20 6;
+            --c-gold-400: 224 171 43;
+            --c-gold-500: 196 145 22;
+            --c-gold-600: 161 115 12;
             --marker-color: #3a5a20;
         }
+
         [data-theme="cyber"] {
-            --c-earth-50: 243 244 246; --c-earth-100: 229 231 235; --c-earth-200: 156 163 175;
-            --c-earth-500: 79 70 229; --c-earth-600: 55 48 163; --c-earth-700: 49 46 129;
-            --c-earth-800: 30 27 75; --c-earth-900: 15 10 41; --c-earth-950: 0 0 0;
-            --c-gold-400: 168 85 247; --c-gold-500: 147 51 234; --c-gold-600: 126 34 206;
-            --marker-color: #3730a3;
-        }
-        [data-theme="zen"] {
-            --c-earth-50: 240 253 250; --c-earth-100: 204 251 241; --c-earth-200: 153 246 228;
-            --c-earth-500: 20 184 166; --c-earth-600: 13 148 136; --c-earth-700: 15 118 110;
-            --c-earth-800: 17 94 89; --c-earth-900: 19 78 74; --c-earth-950: 4 47 46;
-            --c-gold-400: 251 146 60; --c-gold-500: 249 115 22; --c-gold-600: 234 88 12;
-            --marker-color: #0d9488;
-        }
-        [data-theme="retro"] {
-            --c-earth-50: 254 252 232; --c-earth-100: 254 240 138; --c-earth-200: 253 224 71;
-            --c-earth-500: 217 119 6; --c-earth-600: 180 83 9; --c-earth-700: 146 64 14;
-            --c-earth-800: 120 53 15; --c-earth-900: 69 26 3; --c-earth-950: 45 16 2;
-            --c-gold-400: 45 212 191; --c-gold-500: 20 184 166; --c-gold-600: 13 148 136;
-            --marker-color: #b45309;
-        }
-        [data-theme="pinky"] {
-            --c-earth-50: 253 242 248; --c-earth-100: 252 231 243; --c-earth-200: 251 207 232;
-            --c-earth-500: 236 72 153; --c-earth-600: 219 39 119; --c-earth-700: 190 24 93;
-            --c-earth-800: 157 23 77; --c-earth-900: 131 24 67; --c-earth-950: 80 7 36;
-            --c-gold-400: 96 165 250; --c-gold-500: 59 130 246; --c-gold-600: 37 99 235;
-            --marker-color: #db2777;
-        }
-        [data-theme="monochrome"] {
-            --c-earth-50: 248 250 252; --c-earth-100: 241 245 249; --c-earth-200: 226 232 240;
-            --c-earth-500: 71 85 105; --c-earth-600: 51 65 85; --c-earth-700: 30 41 59;
-            --c-earth-800: 15 23 42; --c-earth-900: 2 6 23; --c-earth-950: 0 0 0;
-            --c-gold-400: 148 163 184; --c-gold-500: 100 116 139; --c-gold-600: 71 85 105;
-            --marker-color: #334155;
-        }
-        [data-theme="sunset"] {
-            --c-earth-50: 254 242 242; --c-earth-100: 254 226 226; --c-earth-200: 254 202 202;
-            --c-earth-500: 239 68 68; --c-earth-600: 220 38 38; --c-earth-700: 185 28 28;
-            --c-earth-800: 127 29 29; --c-earth-900: 69 10 10; --c-earth-950: 45 6 6;
-            --c-gold-400: 250 204 21; --c-gold-500: 234 179 8; --c-gold-600: 202 138 4;
-            --marker-color: #dc2626;
-        }
-        [data-theme="forest"] {
-            --c-earth-50: 240 253 244; --c-earth-100: 220 252 231; --c-earth-200: 187 247 208;
-            --c-earth-500: 34 197 94; --c-earth-600: 22 163 74; --c-earth-700: 21 128 61;
-            --c-earth-800: 20 83 45; --c-earth-900: 5 46 22; --c-earth-950: 2 28 13;
-            --c-gold-400: 163 230 53; --c-gold-500: 132 204 22; --c-gold-600: 101 163 13;
-            --marker-color: #16a34a;
-        }
-        [data-theme="royal"] {
-            --c-earth-50: 239 246 255; --c-earth-100: 219 234 254; --c-earth-200: 191 219 254;
-            --c-earth-500: 59 130 246; --c-earth-600: 37 99 235; --c-earth-700: 29 78 216;
-            --c-earth-800: 30 58 138; --c-earth-900: 17 24 39; --c-earth-950: 3 7 18;
-            --c-gold-400: 250 204 21; --c-gold-500: 234 179 8; --c-gold-600: 202 138 4;
-            --marker-color: #2563eb;
-        }
-        [data-theme="coffee"] {
-            --c-earth-50: 250 245 240; --c-earth-100: 245 235 220; --c-earth-200: 230 210 185;
-            --c-earth-500: 139 90 43; --c-earth-600: 101 67 33; --c-earth-700: 80 50 20;
-            --c-earth-800: 60 40 15; --c-earth-900: 40 25 10; --c-earth-950: 20 10 5;
-            --c-gold-400: 210 180 140; --c-gold-500: 193 154 107; --c-gold-600: 160 120 90;
-            --marker-color: #654321;
-        }
-        [data-theme="lavender"] {
-            --c-earth-50: 250 245 255; --c-earth-100: 243 232 255; --c-earth-200: 233 213 255;
-            --c-earth-500: 168 85 247; --c-earth-600: 147 51 234; --c-earth-700: 126 34 206;
-            --c-earth-800: 88 28 135; --c-earth-900: 59 7 100; --c-earth-950: 30 0 50;
-            --c-gold-400: 253 186 116; --c-gold-500: 251 146 60; --c-gold-600: 234 88 12;
-            --marker-color: #9333ea;
-        }
-        [data-theme="gmni"] {
-            --c-earth-50: 254 242 242; --c-earth-100: 254 226 226; --c-earth-200: 254 202 202;
-            --c-earth-500: 178 34 34; --c-earth-600: 178 34 34; --c-earth-700: 139 0 0;
-            --c-earth-800: 20 20 20; --c-earth-900: 0 0 0; --c-earth-950: 0 0 0;
-            --c-gold-400: 255 192 0; --c-gold-500: 255 192 0; --c-gold-600: 204 150 0;
-            --marker-color: #b22222;
+            --c-earth-50: 243 244 246;
+            --c-earth-500: 79 70 229;
+            --c-earth-600: 67 56 202;
+            --c-earth-700: 55 48 163;
+            --c-earth-800: 30 27 75;
+            --c-gold-400: 168 85 247;
+            --c-gold-500: 147 51 234;
+            --c-gold-600: 126 34 206;
+            --marker-color: #4338ca;
         }
 
-        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        .active-tab { background-color: var(--marker-color, #3a5a20) !important; color: #ffffff !important; }
-        .sub-tab-active { border-bottom: 3px solid var(--marker-color, #3a5a20); color: var(--marker-color, #3a5a20); font-weight: 700; }
-        @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
-        .slide-in-right { animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @media print {
-            body * { visibility: hidden; }
-            #cartDrawer, #cartDrawer * { visibility: visible; }
-            #cartDrawer { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; }
-            .no-print { display: none !important; }
+        [data-theme="zen"] {
+            --c-earth-50: 240 253 250;
+            --c-earth-500: 20 184 166;
+            --c-earth-600: 13 148 136;
+            --c-earth-700: 15 118 110;
+            --c-earth-800: 17 94 89;
+            --c-gold-400: 251 146 60;
+            --c-gold-500: 249 115 22;
+            --c-gold-600: 234 88 12;
+            --marker-color: #0d9488;
+        }
+
+        [data-theme="retro"] {
+            --c-earth-50: 255 251 235;
+            --c-earth-500: 217 119 6;
+            --c-earth-600: 180 83 9;
+            --c-earth-700: 146 64 14;
+            --c-earth-800: 120 53 15;
+            --c-gold-400: 234 179 8;
+            --c-gold-500: 202 138 4;
+            --c-gold-600: 161 98 7;
+            --marker-color: #b45309;
+        }
+
+        [data-theme="pinky"] {
+            --c-earth-50: 253 242 248;
+            --c-earth-500: 236 72 153;
+            --c-earth-600: 219 39 119;
+            --c-earth-700: 190 24 93;
+            --c-earth-800: 131 24 67;
+            --c-gold-400: 244 114 182;
+            --c-gold-500: 236 72 153;
+            --c-gold-600: 219 39 119;
+            --marker-color: #db2777;
+        }
+
+        [data-theme="monochrome"] {
+            --c-earth-50: 250 250 250;
+            --c-earth-500: 82 82 91;
+            --c-earth-600: 39 39 42;
+            --c-earth-700: 24 24 27;
+            --c-earth-800: 9 9 11;
+            --c-gold-400: 161 161 170;
+            --c-gold-500: 113 113 122;
+            --c-gold-600: 82 82 91;
+            --marker-color: #27272a;
+        }
+
+        [data-theme="sunset"] {
+            --c-earth-50: 254 242 242;
+            --c-earth-500: 239 68 68;
+            --c-earth-600: 220 38 38;
+            --c-earth-700: 185 28 28;
+            --c-earth-800: 153 27 27;
+            --c-gold-400: 251 146 60;
+            --c-gold-500: 249 115 22;
+            --c-gold-600: 234 88 12;
+            --marker-color: #dc2626;
+        }
+
+        [data-theme="forest"] {
+            --c-earth-50: 236 253 245;
+            --c-earth-500: 16 185 129;
+            --c-earth-600: 5 150 105;
+            --c-earth-700: 4 120 87;
+            --c-earth-800: 6 78 59;
+            --c-gold-400: 250 204 21;
+            --c-gold-500: 234 179 8;
+            --c-gold-600: 202 138 4;
+            --marker-color: #059669;
+        }
+
+        [data-theme="royal"] {
+            --c-earth-50: 245 243 255;
+            --c-earth-500: 139 92 246;
+            --c-earth-600: 124 58 237;
+            --c-earth-700: 109 40 217;
+            --c-earth-800: 76 29 149;
+            --c-gold-400: 251 191 36;
+            --c-gold-500: 245 158 11;
+            --c-gold-600: 217 119 6;
+            --marker-color: #7c3aed;
+        }
+
+        [data-theme="coffee"] {
+            --c-earth-50: 254 243 199;
+            --c-earth-500: 180 83 9;
+            --c-earth-600: 120 53 15;
+            --c-earth-700: 69 26 3;
+            --c-earth-800: 44 16 2;
+            --c-gold-400: 217 119 6;
+            --c-gold-500: 180 83 9;
+            --c-gold-600: 146 64 14;
+            --marker-color: #78350f;
+        }
+
+        [data-theme="lavender"] {
+            --c-earth-50: 250 245 255;
+            --c-earth-500: 168 85 247;
+            --c-earth-600: 147 51 234;
+            --c-earth-700: 126 34 206;
+            --c-earth-800: 88 28 135;
+            --c-gold-400: 232 121 249;
+            --c-gold-500: 217 70 239;
+            --c-gold-600: 192 38 211;
+            --marker-color: #9333ea;
+        }
+
+        [data-theme="gmni"] {
+            --c-earth-50: 254 242 242;
+            --c-earth-500: 220 38 38;
+            --c-earth-600: 153 27 27;
+            --c-earth-700: 127 29 29;
+            --c-earth-800: 69 10 10;
+            --c-gold-400: 250 204 21;
+            --c-gold-500: 234 179 8;
+            --c-gold-600: 202 138 4;
+            --marker-color: #991b1b;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.2s ease-out forwards;
         }
     </style>
 </head>
-<body class="text-slate-800 bg-slate-50 min-h-screen flex flex-col md:flex-row">
+<body class="bg-slate-100 font-sans text-slate-800 antialiased h-screen overflow-hidden flex flex-col sm:flex-row">
 
-    <!-- SIDEBAR NAVIGATION -->
-    <aside class="w-full md:w-64 bg-earth-900 text-white flex-shrink-0 flex flex-col justify-between shadow-xl z-20">
+    <!-- MOBILE BACKDROP SIDEBAR -->
+    <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 hidden sm:hidden transition-opacity duration-300 opacity-0"></div>
+
+    <!-- SIDEBAR UTAMA -->
+    <aside id="mainSidebar" class="fixed sm:static inset-y-0 left-0 z-40 w-64 bg-earth-800 text-white flex flex-col justify-between transform -translate-x-full sm:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl sm:shadow-none">
         <div>
-            <!-- KIRI ATAS: Pengaturan Outlet -->
-            <div class="p-5 flex items-center justify-between border-b border-earth-800">
-                <div class="flex items-center space-x-3">
-                    <div id="sidebarShopLogo" class="w-10 h-10 rounded-xl bg-earth-600 border border-gold-500 flex items-center justify-center text-gold-400 shadow-md bg-cover bg-center overflow-hidden">
-                        <img src="Minimalist White Checklist Logo.png" alt="Logo Toko Utama" class="w-full h-full object-contain p-1">
+            <!-- Header Sidebar (Outlet Profile Utama) -->
+            <div class="p-5 border-b border-earth-700/60 flex items-center space-x-3">
+                <div class="w-11 h-11 rounded-xl bg-white/10 border border-white/20 p-1 flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
+                    <img id="sidebarOutletLogo" src="Minimalist White Checklist Logo.png" alt="Logo Outlet" class="w-full h-full object-contain">
+                </div>
+                <div class="overflow-hidden">
+                    <h1 id="sidebarOutletName" class="font-bold text-sm tracking-wide text-white truncate">Kedai Kopi Kita</h1>
+                    <p id="sidebarOutletSlogan" class="text-[11px] text-earth-200 truncate opacity-80">Rasa Nikmat, Harga Pas</p>
+                </div>
+            </div>
+
+            <!-- Navigasi Utama -->
+            <nav class="p-3 space-y-1">
+                <button onclick="switchPage('pos')" id="nav-pos" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-xs transition bg-earth-700 text-white shadow-sm">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-cash-register w-5 text-center text-gold-400"></i>
+                        <span>Kasir</span>
+                    </div>
+                </button>
+
+                <button onclick="switchPage('pemasukan')" id="nav-pemasukan" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-xs transition text-earth-100 hover:bg-earth-700/50 hover:text-white">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-arrow-down-left w-5 text-center text-emerald-400"></i>
+                        <span>Data Pemasukan</span>
+                    </div>
+                    <i class="fa-solid fa-lock text-[10px] opacity-40 nav-lock-icon"></i>
+                </button>
+
+                <button onclick="switchPage('pengeluaran')" id="nav-pengeluaran" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-xs transition text-earth-100 hover:bg-earth-700/50 hover:text-white">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-arrow-up-right w-5 text-center text-rose-400"></i>
+                        <span>Data Pengeluaran</span>
+                    </div>
+                    <i class="fa-solid fa-lock text-[10px] opacity-40 nav-lock-icon"></i>
+                </button>
+
+                <button onclick="switchPage('laporan')" id="nav-laporan" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-xs transition text-earth-100 hover:bg-earth-700/50 hover:text-white">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-chart-line w-5 text-center text-blue-400"></i>
+                        <span>Analisis & Laporan</span>
+                    </div>
+                    <i class="fa-solid fa-lock text-[10px] opacity-40 nav-lock-icon"></i>
+                </button>
+
+                <button onclick="switchPage('kelola')" id="nav-kelola" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-xs transition text-earth-100 hover:bg-earth-700/50 hover:text-white">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-boxes-stacked w-5 text-center text-amber-400"></i>
+                        <span>Kelola Menu</span>
+                    </div>
+                    <i class="fa-solid fa-lock text-[10px] opacity-40 nav-lock-icon"></i>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Footer Sidebar (Static Branding Locked) -->
+        <div class="p-3 border-t border-earth-700/60 bg-earth-900/50">
+            <div class="flex items-center justify-between px-2 py-1.5 rounded-xl bg-earth-800/80 border border-earth-700/50">
+                <div class="flex items-center space-x-2.5 overflow-hidden">
+                    <span class="text-lg select-none">🐣</span>
+                    <div class="overflow-hidden">
+                        <p class="font-bold text-xs text-white truncate tracking-wide">derimakasii</p>
+                        <p class="text-[10px] text-gold-400 font-medium truncate">sama-sama ✌️</p>
+                    </div>
+                </div>
+                <button onclick="requestAdminAccess()" class="p-1.5 text-earth-200 hover:text-white hover:bg-earth-700 rounded-lg transition shrink-0" title="Switch Admin/Kasir Role">
+                    <i id="roleLockIcon" class="fa-solid fa-lock text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- KONTEN UTAMA WIDGET & PAGE -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 relative">
+
+        <!-- MOBILE HEADER BAR -->
+        <div class="sm:hidden bg-earth-800 text-white px-4 py-3 flex items-center justify-between z-20 shadow-md">
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleSidebar()" class="p-1.5 rounded-lg bg-earth-700 text-white hover:bg-earth-600 focus:outline-none">
+                    <i class="fa-solid fa-bars text-base"></i>
+                </button>
+                <div class="flex items-center space-x-2">
+                    <span class="text-base select-none">🐣</span>
+                    <span class="font-bold text-sm tracking-wide">derimakasii</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleThemeModal()" class="w-8 h-8 rounded-lg bg-earth-700 flex items-center justify-center text-gold-400 text-xs shadow-sm">
+                    <i class="fa-solid fa-palette"></i>
+                </button>
+                <button id="pwaInstallBtn" onclick="installPWA()" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-lg text-xs font-bold items-center space-x-1 shadow-sm transition">
+                    <i class="fa-solid fa-download"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- TOP HEADER DESKTOP & MOBILE NAVIGATION TOP -->
+        <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3.5 flex items-center justify-between gap-2 z-10 relative">
+            <div>
+                <h2 id="pageTitle" class="text-lg sm:text-xl font-bold text-slate-800 leading-tight">Menu Utama Kasir</h2>
+                <p id="pageSubtitle" class="text-[11px] sm:text-xs text-slate-500 hidden sm:block">Pilih menu, kelola pesanan, dan lakukan transaksi</p>
+            </div>
+            
+            <div class="flex items-center gap-2 ml-auto">
+                <!-- Tombol Palette Tema (Icon Only Pop-up Modal) -->
+                <button onclick="toggleThemeModal()" class="w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl flex items-center justify-center text-sm transition shadow-sm border border-slate-200" title="Pilih Tema">
+                    <i class="fa-solid fa-palette text-gold-500"></i>
+                </button>
+
+                <!-- Tombol Printer Bluetooth (Icon Only) -->
+                <button id="btnBluetooth" onclick="connectBluetooth()" class="w-9 h-9 bg-blue-50 border border-blue-200 text-blue-600 rounded-xl flex items-center justify-center text-sm shadow-sm transition hover:bg-blue-100" title="Koneksi Printer Bluetooth">
+                    <i class="fa-brands fa-bluetooth-b"></i>
+                </button>
+
+                <!-- Header Stats (Khusus Admin) -->
+                <div id="topHeaderStats" class="hidden items-center gap-2">
+                    <div class="bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-xl text-right">
+                        <p class="text-[9px] uppercase tracking-wider text-emerald-600 font-bold">Masuk</p>
+                        <p id="topTodayIncome" class="text-xs font-bold text-emerald-700">Rp 0</p>
+                    </div>
+                    <div class="bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-xl text-right">
+                        <p class="text-[9px] uppercase tracking-wider text-rose-600 font-bold">Keluar</p>
+                        <p id="topTodayExpense" class="text-xs font-bold text-rose-700">Rp 0</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTAINER RENDER VUE/PAGE -->
+        <div class="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar">
+
+            <!-- PAGE 1: KASIR (POS) -->
+            <section id="page-pos" class="space-y-5">
+                <!-- Kategori & Filter Menu -->
+                <div class="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200/80 shadow-sm flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
+                    <div id="posCategoryContainer" class="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0 custom-scrollbar">
+                        <button onclick="filterPosCategory('all')" class="pos-cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-earth-600 text-white shadow-sm shrink-0">Semua Menu</button>
+                    </div>
+                    <div class="relative shrink-0">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="text" id="posSearchInput" oninput="renderPosGrid()" placeholder="Cari menu..." class="w-full sm:w-64 pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-earth-500 transition">
+                    </div>
+                </div>
+
+                <!-- Grid Katalog Menu Kasir -->
+                <div id="posGridContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-4">
+                    <!-- Dynamic Menu Items Render Here -->
+                </div>
+            </section>
+
+            <!-- PAGE 2: DATA PEMASUKAN -->
+            <section id="page-pemasukan" class="hidden space-y-5">
+                <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-sm sm:text-base">Riwayat Pemasukan Transaksi</h3>
+                            <p class="text-xs text-slate-500">Semua pesanan yang telah dikonfirmasi dan lunas</p>
+                        </div>
+                        <div class="flex items-center space-x-2 w-full sm:w-auto">
+                            <button onclick="exportExcel('pemasukan')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition flex items-center space-x-2">
+                                <i class="fa-solid fa-file-excel"></i>
+                                <span>Ekspor Excel</span>
+                            </button>
+              <img src="Minimalist White Checklist Logo.png" alt="Logo Toko Utama" class="w-full h-full object-contain p-1">
                     </div>
                     <div>
                         <h1 id="sidebarShopName" class="font-bold text-lg leading-tight tracking-wide text-gold-400">derimakasii</h1>
