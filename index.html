@@ -212,7 +212,7 @@
             </nav>
         </div>
 
-        <!-- KIRI BAWAH PERMANEN (FIXED BRANDING: derimakasii, sama-sama ✌️, 🐣) -->
+        <!-- KIRI BAWAH PERMANEN -->
         <div class="hidden md:block p-4 border-t border-earth-800 bg-earth-950/60">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
@@ -240,7 +240,7 @@
             </div>
             
             <div class="flex items-center gap-2 sm:gap-4 flex-wrap">
-                <!-- Selector Tema Ringkas (Icon Only Button) -->
+                <!-- Selector Tema Ringkas -->
                 <div class="relative inline-block text-left">
                     <button type="button" onclick="toggleThemeDropdown()" class="w-9 h-9 flex items-center justify-center bg-white border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50 shadow-sm transition" title="Pilih Tema Warna">
                         <i class="fa-solid fa-palette text-sm"></i>
@@ -341,7 +341,7 @@
                             <div>
                                 <label class="block font-medium text-slate-600 mb-1">Kategori</label>
                                 <select id="incCategory" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-emerald-500 focus:border-emerald-500">
-                                    <option value="Penjualan POS">Penjualan Menu</option>
+                                    <option value="Penjualan Menu">Penjualan Menu</option>
                                     <option value="Event / Catering">Event / Catering</option>
                                     <option value="Merchandise">Merchandise</option>
                                     <option value="Lainnya">Lainnya</option>
@@ -564,7 +564,6 @@
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
                         <div>
-                            <!-- REVISI: Mengubah 'Total Omset (Pemasukan)' menjadi 'Total Pemasukan' -->
                             <p class="text-xs text-slate-500 font-medium">Total Pemasukan</p>
                             <h4 id="dashTotalIncome" class="text-xl font-bold text-emerald-600 mt-1">Rp 0</h4>
                         </div>
@@ -672,11 +671,10 @@
                             <input type="text" id="profSlogan" placeholder="sama-sama✌️" required class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-earth-500 focus:border-earth-500">
                         </div>
                         <div>
-                            <label class="block font-medium text-slate-600 mb-1">PIN Mode Admin</label>
-                            <input type="password" id="profPin" placeholder="1234" maxlength="6" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-earth-500 focus:border-earth-500 font-mono">
+                            <label class="block font-medium text-slate-600 mb-1">PIN Mode Admin (Min 4 Digit)</label>
+                            <input type="password" id="profPin" placeholder="1234" minlength="4" maxlength="6" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-earth-500 focus:border-earth-500 font-mono">
                         </div>
                         <div class="flex flex-col">
-                            <!-- REVISI: Mengubah label dari 'Logo Outlet (Header & Struk)' menjadi 'Logo Outlet' -->
                             <label class="block font-medium text-slate-600 mb-1">Logo Outlet</label>
                             <div class="flex items-center space-x-2 bg-slate-50 p-1.5 border border-slate-200 rounded-xl">
                                 <input type="file" id="profLogoInput" accept="image/*" class="hidden" onchange="handleProfileLogo(event)">
@@ -703,7 +701,6 @@
                     </div>
                     <form id="discountForm" onsubmit="handleDiscountSubmit(event)" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
                         <div>
-                            <!-- REVISI: Mengubah label dari 'Nama / Keterangan Diskon' menjadi 'Nama Diskon' -->
                             <label class="block font-medium text-slate-600 mb-1">Nama Diskon</label>
                             <input type="text" id="discName" placeholder="Contoh: Promo Jumat Berkah" required class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-earth-500 focus:border-earth-500">
                         </div>
@@ -1048,6 +1045,17 @@
         let expensePieChartInstance = null;
         let topItemsBarChartInstance = null;
 
+        // Utility Function ISO Local String
+        function getLocalISOString(dateObj = new Date()) {
+            const pad = (n) => n.toString().padStart(2, '0');
+            return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}T${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`;
+        }
+
+        function getLocalDateOnly(dateObj = new Date()) {
+            const pad = (n) => n.toString().padStart(2, '0');
+            return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}`;
+        }
+
         function initIndexedDB() {
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open('DerimakasiiDB', 2);
@@ -1188,13 +1196,11 @@
             const savedTheme = localStorage.getItem('derimakasii_theme') || 'default';
             changeTheme(savedTheme);
 
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            const nowStr = now.toISOString().slice(0, 16);
+            const nowStr = getLocalISOString();
             document.getElementById('incDate').value = nowStr;
             document.getElementById('expDate').value = nowStr;
 
-            const todayDateStr = now.toISOString().slice(0, 10);
+            const todayDateStr = getLocalDateOnly();
             
             document.getElementById('incomeDateStart').value = todayDateStr;
             document.getElementById('incomeDateEnd').value = todayDateStr;
@@ -1331,9 +1337,15 @@
 
         async function handleProfileSubmit(e) {
             e.preventDefault();
+            const pinVal = document.getElementById('profPin').value || '1234';
+            if(pinVal.length < 4) {
+                showToast('PIN Admin minimal harus 4 digit!');
+                return;
+            }
+
             shopProfile.name = document.getElementById('profName').value;
             shopProfile.slogan = document.getElementById('profSlogan').value;
-            shopProfile.pin = document.getElementById('profPin').value || '1234';
+            shopProfile.pin = pinVal;
             shopProfile.logo = currentProfileLogo;
             
             await saveToStore('settings', { key: 'shopProfile', value: shopProfile });
@@ -1607,9 +1619,7 @@
             }
 
             const paymentMethod = document.getElementById('cartPaymentMethod').value;
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            const timeStr = now.toISOString().slice(0, 16);
+            const timeStr = getLocalISOString();
 
             let orderSummaryNames = [];
             for (const id of itemIds) {
@@ -1956,9 +1966,7 @@
             incomes.unshift(newIncome);
 
             document.getElementById('incomeForm').reset();
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            document.getElementById('incDate').value = now.toISOString().slice(0, 16);
+            document.getElementById('incDate').value = getLocalISOString();
             renderIncomeTable();
             updateHeaderSummaries();
             showToast('Data Pemasukan Berhasil Ditambahkan');
@@ -1968,20 +1976,20 @@
         function getFilteredIncomes() {
             const search = document.getElementById('incomeSearch').value.toLowerCase();
             const period = document.getElementById('incomePeriodFilter').value;
+            const now = new Date();
+            const todayStr = getLocalDateOnly(now);
 
             return incomes.filter(inc => {
                 const matchSearch = inc.item.toLowerCase().includes(search) || inc.category.toLowerCase().includes(search) || inc.payment.toLowerCase().includes(search);
                 
                 let matchDate = true;
+                const incDateStr = inc.date.split('T')[0];
                 const incDateObj = new Date(inc.date);
-                const now = new Date();
-                const incDateStrLocal = incDateObj.toLocaleDateString('en-CA');
-                const todayStrLocal = now.toLocaleDateString('en-CA');
 
-                if (period === 'today') matchDate = (incDateStrLocal === todayStrLocal);
+                if (period === 'today') matchDate = (incDateStr === todayStr);
                 else if (period === 'yesterday') {
                     let y = new Date(now); y.setDate(now.getDate() - 1);
-                    matchDate = (incDateStrLocal === y.toLocaleDateString('en-CA'));
+                    matchDate = (incDateStr === getLocalDateOnly(y));
                 } else if (period === 'last_7_days') {
                     let s = new Date(now); s.setDate(now.getDate() - 7);
                     matchDate = (incDateObj >= s && incDateObj <= now);
@@ -1990,7 +1998,7 @@
                 else if (period === 'custom') {
                     const startVal = document.getElementById('incomeDateStart').value;
                     const endVal = document.getElementById('incomeDateEnd').value;
-                    if (startVal && endVal) matchDate = (incDateStrLocal >= startVal && incDateStrLocal <= endVal);
+                    if (startVal && endVal) matchDate = (incDateStr >= startVal && incDateStr <= endVal);
                 }
                 
                 return matchSearch && matchDate;
@@ -2054,9 +2062,7 @@
             expenses.unshift(newExp);
 
             document.getElementById('expenseForm').reset();
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            document.getElementById('expDate').value = now.toISOString().slice(0, 16);
+            document.getElementById('expDate').value = getLocalISOString();
             renderExpenseTable();
             updateHeaderSummaries();
             showToast('Data Pengeluaran Berhasil Ditambahkan');
@@ -2066,20 +2072,20 @@
         function getFilteredExpenses() {
             const search = document.getElementById('expenseSearch').value.toLowerCase();
             const period = document.getElementById('expensePeriodFilter').value;
+            const now = new Date();
+            const todayStr = getLocalDateOnly(now);
 
             return expenses.filter(exp => {
                 const matchSearch = exp.item.toLowerCase().includes(search) || exp.category.toLowerCase().includes(search);
                 
                 let matchDate = true;
+                const expDateStr = exp.date.split('T')[0];
                 const expDateObj = new Date(exp.date);
-                const now = new Date();
-                const expDateStrLocal = expDateObj.toLocaleDateString('en-CA');
-                const todayStrLocal = now.toLocaleDateString('en-CA');
 
-                if (period === 'today') matchDate = (expDateStrLocal === todayStrLocal);
+                if (period === 'today') matchDate = (expDateStr === todayStr);
                 else if (period === 'yesterday') {
                     let y = new Date(now); y.setDate(now.getDate() - 1);
-                    matchDate = (expDateStrLocal === y.toLocaleDateString('en-CA'));
+                    matchDate = (expDateStr === getLocalDateOnly(y));
                 } else if (period === 'last_7_days') {
                     let s = new Date(now); s.setDate(now.getDate() - 7);
                     matchDate = (expDateObj >= s && expDateObj <= now);
@@ -2088,7 +2094,7 @@
                 else if (period === 'custom') {
                     const startVal = document.getElementById('expenseDateStart').value;
                     const endVal = document.getElementById('expenseDateEnd').value;
-                    if (startVal && endVal) matchDate = (expDateStrLocal >= startVal && expDateStrLocal <= endVal);
+                    if (startVal && endVal) matchDate = (expDateStr >= startVal && expDateStr <= endVal);
                 }
                 
                 return matchSearch && matchDate;
@@ -2143,7 +2149,7 @@
 
             if (type === 'income') {
                 const filtered = getFilteredIncomes();
-                filename = `Data_Pemasukan_Rapi_${new Date().toISOString().slice(0,10)}.xlsx`;
+                filename = `Data_Pemasukan_Rapi_${getLocalDateOnly()}.xlsx`;
                 
                 dataRows = filtered.map(item => {
                     totalSum += item.price;
@@ -2168,7 +2174,7 @@
 
             } else {
                 const filtered = getFilteredExpenses();
-                filename = `Data_Pengeluaran_Rapi_${new Date().toISOString().slice(0,10)}.xlsx`;
+                filename = `Data_Pengeluaran_Rapi_${getLocalDateOnly()}.xlsx`;
                 
                 dataRows = filtered.map(item => {
                     totalSum += item.price;
@@ -2209,7 +2215,7 @@
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupObj, null, 2));
             const dl = document.createElement('a');
             dl.setAttribute("href", dataStr);
-            dl.setAttribute("download", `Backup_Derimakasii_${new Date().toISOString().slice(0,10)}.json`);
+            dl.setAttribute("download", `Backup_Derimakasii_${getLocalDateOnly()}.json`);
             dl.click();
             showToast('Backup JSON berhasil diunduh!');
         }
@@ -2269,7 +2275,7 @@
             html2canvas(container, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
                 scrollContainer.style.maxHeight = originalMaxHeight;
                 const link = document.createElement('a');
-                link.download = `${filename}_${new Date().toISOString().slice(0, 10)}.jpg`;
+                link.download = `${filename}_${getLocalDateOnly()}.jpg`;
                 link.href = canvas.toDataURL('image/jpeg', 0.9);
                 link.click();
                 showToast('Gambar berhasil diunduh!');
@@ -2277,11 +2283,10 @@
         }
 
         function updateHeaderSummaries() {
-            const now = new Date();
-            const todayStrLocal = now.toLocaleDateString('en-CA');
+            const todayStr = getLocalDateOnly();
 
-            const todayIn = incomes.filter(i => new Date(i.date).toLocaleDateString('en-CA') === todayStrLocal).reduce((acc, curr) => acc + curr.price, 0);
-            const todayExp = expenses.filter(e => new Date(e.date).toLocaleDateString('en-CA') === todayStrLocal).reduce((acc, curr) => acc + curr.price, 0);
+            const todayIn = incomes.filter(i => i.date.split('T')[0] === todayStr).reduce((acc, curr) => acc + curr.price, 0);
+            const todayExp = expenses.filter(e => e.date.split('T')[0] === todayStr).reduce((acc, curr) => acc + curr.price, 0);
 
             document.getElementById('topTodayIncome').innerText = formatRupiah(todayIn);
             document.getElementById('topTodayExpense').innerText = formatRupiah(todayExp);
@@ -2348,16 +2353,16 @@
             period === 'custom' ? customPicker.classList.remove('hidden') : customPicker.classList.add('hidden');
 
             const now = new Date();
+            const todayStr = getLocalDateOnly(now);
             
             const applyDateFilter = (dateString) => {
+                const dateStr = dateString.split('T')[0];
                 const dateObj = new Date(dateString);
-                const dateStrLocal = dateObj.toLocaleDateString('en-CA');
-                const todayStrLocal = now.toLocaleDateString('en-CA');
 
-                if (period === 'today') return (dateStrLocal === todayStrLocal);
+                if (period === 'today') return (dateStr === todayStr);
                 if (period === 'yesterday') {
                     let y = new Date(now); y.setDate(now.getDate() - 1);
-                    return (dateStrLocal === y.toLocaleDateString('en-CA'));
+                    return (dateStr === getLocalDateOnly(y));
                 }
                 if (period === 'last_7_days') {
                     let s = new Date(now); s.setDate(now.getDate() - 7);
@@ -2368,7 +2373,7 @@
                 if (period === 'custom') {
                     const startVal = document.getElementById('chartDateStart').value;
                     const endVal = document.getElementById('chartDateEnd').value;
-                    if (startVal && endVal) return (dateStrLocal >= startVal && dateStrLocal <= endVal);
+                    if (startVal && endVal) return (dateStr >= startVal && dateStr <= endVal);
                 }
                 return true;
             };
@@ -2432,7 +2437,7 @@
 
             const itemQtyMap = {};
             filteredIncomes.forEach(inc => {
-                if (!inc.item) return;
+                if (!inc.item || inc.category !== 'Penjualan Menu') return;
                 const parts = inc.item.split(',');
                 parts.forEach(part => {
                     const match = part.trim().match(/^(.+?)\s*\([xX](\d+)\)$/);
@@ -2440,8 +2445,6 @@
                         const itemName = match[1].trim();
                         const qty = parseInt(match[2], 10) || 1;
                         itemQtyMap[itemName] = (itemQtyMap[itemName] || 0) + qty;
-                    } else {
-                        itemQtyMap[part.trim()] = (itemQtyMap[part.trim()] || 0) + 1;
                     }
                 });
             });
@@ -2492,3 +2495,89 @@
     </script>
 </body>
 </html>
+```eof
+
+```json:manifest.json
+{
+  "name": "derimakasii - Kasir & Keuangan F&B",
+  "short_name": "derimakasii",
+  "description": "Sistem Kasir dan Keuangan F&B PWA Offline",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3a5a20",
+  "icons": [
+    {
+      "src": "Minimalist White Checklist Logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "Minimalist White Checklist Logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+```eof
+
+```javascript:sw.js
+// Service Worker untuk Dukungan Full Offline PWA derimakasii
+const CACHE_NAME = 'derimakasii-pwa-v6';
+const LOCAL_STATIC_ASSETS = [
+    './',
+    './index.html',
+    './manifest.json',
+    './Minimalist White Checklist Logo.png'
+];
+
+self.addEventListener('install', (event) => {
+    event.waitUntil(
+        caches.open(CACHE_NAME).then((cache) => {
+            console.log('[Service Worker] Caching local static assets');
+            return cache.addAll(LOCAL_STATIC_ASSETS);
+        })
+    );
+    self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then((keys) => {
+            return Promise.all(
+                keys.map((key) => {
+                    if (key !== CACHE_NAME) {
+                        return caches.delete(key);
+                    }
+                })
+            );
+        })
+    );
+    self.clients.claim();
+});
+
+self.addEventListener('fetch', (event) => {
+    event.respondWith(
+        caches.match(event.request).then((cachedResponse) => {
+            if (cachedResponse) {
+                return cachedResponse;
+            }
+            return fetch(event.request).then((networkResponse) => {
+                if (event.request.method === 'GET' && networkResponse.status === 200) {
+                    const responseClone = networkResponse.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, responseClone);
+                    });
+                }
+                return networkResponse;
+            }).catch(() => {
+                if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
+                    return caches.match('./index.html');
+                }
+            });
+        })
+    );
+});
+```eof
+
+Proyek siap dijalankan secara offline maupun diinstal sebagai PWA. Apakah ada fitur kasir lain yang ingin Anda kembangkan?
